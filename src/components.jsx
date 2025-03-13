@@ -3,27 +3,60 @@ import { FaGithub,  FaLinkedin } from "react-icons/fa";
 import { MdEmail, MdOutlinePhone, MdLocationPin } from "react-icons/md";
 import './components.css';
 
-function Profile() {
+function ProfileSection() {
+      const info = {
+            fullName: 'Elliot Alderson',
+            profession: 'Cybersecurity Engineer',
+            email: 'mrRobot@mail.com',
+            number: '123-456-7890',
+            location: 'San Francisco, CA',
+            linkedIn: '',
+            github: ''
+      }
+
+      const [editStatus, setEditStatus] = useState(false);
+      const [profileInfo, setProfileInfo] = useState(info);
+
+      const showEditProfile = (e) => {
+            e.target.classList.toggle('no-click');
+            setEditStatus(true);
+      }
+
+      const editValues = (e) => {
+            const {name, value} = e.target;
+            setProfileInfo((prev) => ({...prev, [name]: value}));
+      }
+
+      return (
+            <>
+                  <Profile information={profileInfo} editHandler={showEditProfile} />
+                  {editStatus ? <EditProfile information={profileInfo} updateValue={editValues} /> : null}
+            </>
+      );
+}
+
+function Profile({information, editHandler}) {
+
       return (
             <section className="profile-section">
-                  <button className="edit-profile">Edit</button>
-                  <h1>Elliot Alderson</h1>
-                  <h2>Cybersecurity Engineer</h2>
+                  <button className="edit-profile" onClick={editHandler}>Edit</button>
+                  <h1>{information.fullName}</h1>
+                  <h2>{information.profession}</h2>
                   <div className="profile-links">
                         <a href="#">
-                              <MdEmail className='icon'/> mrRobot@mail.com
+                              <MdEmail className='icon'/> {information.email}
                         </a>
                         <a href="#">
-                              <MdOutlinePhone className='icon'/> 123-456-7890
+                              <MdOutlinePhone className='icon'/> {information.number}
                         </a>
                         <a href="#">
                               <MdLocationPin />
-                              San Francisco, CA
+                              {information.location}
                         </a>
-                        <a href="#">
+                        <a href={information.linkedIn}>
                               <FaLinkedin /> LinkedIn
                         </a>
-                        <a href="#">
+                        <a href={information.github}>
                               <FaGithub /> Github
                         </a>
                   </div>
@@ -31,49 +64,79 @@ function Profile() {
       );
 }
 
-function EditProfile() {
+function EditProfile({information, updateValue}) {
       return (
             <section className='edit-profile-section'>
                   <h2>Profile Editor</h2>
                   <form action="#">
-                        <div class="form-group">
+                        <div>
                               <label htmlFor="full-name">Full Name:</label>
-                              <input type="text" name="full-name" />
+                              <input type="text" 
+                                    name="fullName" 
+                                    id="full-name"
+                                    placeholder={information.fullName} 
+                                    onChange={updateValue} />
                         </div>
-                        <div class="form-group">
+                        <div>
                               <label htmlFor="profession">Profession:</label>
-                              <input type="text" name="profession" />
+                              <input type="text" 
+                                    name="profession" 
+                                    id="profession" 
+                                    placeholder={information.profession}
+                                    onChange={updateValue} />
                         </div>
-                        <div class="form-group">
+                        <div>
                               <label htmlFor="email">Email:</label>
-                              <input type="email" name="email" />
+                              <input type="email" 
+                                    name="email" 
+                                    id="email" 
+                                    autoComplete='email'
+                                    placeholder={information.email}
+                                    onChange={updateValue} />
                         </div>
-                        <div class="form-group">
+                        <div>
                               <label htmlFor="phone-number">Phone Number:</label>
-                              <input type="tel" name="phone-number" />
+                              <input type="tel" 
+                                    name="number" 
+                                    id="phone-number" 
+                                    placeholder={information.number} 
+                                    onChange={updateValue}/>
                         </div>
-                        <div class="form-group">
+                        <div>
                               <label htmlFor="location">Location:</label>
-                              <input type="text" name="location" />
+                              <input type="text" 
+                                    name="location" 
+                                    id="location" 
+                                    placeholder={information.location} 
+                                    onChange={updateValue} />
                         </div>
-                        <div class="form-group">
+                        <div>
                               <label htmlFor="linkedin-account">LinkedIn Account:</label>
-                              <input type="text" name="linkedin-account" />
+                              <input type="text" 
+                                    name="linkedIn" 
+                                    id="linkedin-account"
+                                    placeholder={information.linkedIn} 
+                                    onChange={updateValue} />
                         </div>
-                        <div class="form-group">
+                        <div>
                               <label htmlFor="github-account">GitHub Account:</label>
-                              <input type="text" name="github-account" />
+                              <input type="text" 
+                                    name="github" 
+                                    id="github-account" 
+                                    placeholder={information.github}
+                                    onChange={updateValue} />
                         </div>                                                
-                        <div className="button-group">
-                              <button className="cancel">Cancel</button>
-                              <button className="cancel">Save</button>
-                        </div>
                   </form>
+                  <div className="button-group">
+                              <button className="cancel">Cancel</button>
+                              <button className="save">Save</button>
+                  </div>
             </section>
       );
 }
 
 export {
       Profile,
-      EditProfile     
+      EditProfile,
+      ProfileSection,     
 }

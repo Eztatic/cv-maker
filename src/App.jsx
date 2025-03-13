@@ -1,12 +1,12 @@
 import './App.css'
-import {Profile, EditProfile} from './components.jsx';
+import { useState } from 'react';
+import {Profile, EditProfile, ProfileSection} from './components.jsx';
 
 function App() {
 
   return (
     <>
-      <Profile />
-      <EditProfile />
+      <ProfileSection />
     </>
   )
 }
