@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub,  FaLinkedin } from "react-icons/fa";
 import { MdEmail, MdOutlinePhone, MdLocationPin } from "react-icons/md";
 import './components.css';
@@ -10,36 +11,54 @@ function ProfileSection() {
             email: 'mrRobot@mail.com',
             number: '123-456-7890',
             location: 'San Francisco, CA',
-            linkedIn: '',
-            github: ''
+            linkedIn: 'https://www.linkedin.com/login',
+            github: 'https://github.com/'
       }
 
       const [editStatus, setEditStatus] = useState(false);
       const [profileInfo, setProfileInfo] = useState(info);
+      const [currentProfile, setCurrentProfile] = useState(profileInfo);
 
-      const showEditProfile = (e) => {
-            e.target.classList.toggle('no-click');
+      const showEditProfile = () => {
             setEditStatus(true);
+            setCurrentProfile({... profileInfo});
+      }
+
+      const cancelEditProfile = () => {
+            setTimeout(() => setEditStatus(false), 250);
+            setProfileInfo(currentProfile);
+      }
+
+      const saveEditProfile = () => {
+            setTimeout(() => setEditStatus(false), 250);
       }
 
       const editValues = (e) => {
-            const {name, value} = e.target;
-            setProfileInfo((prev) => ({...prev, [name]: value}));
+            setProfileInfo(prev => ({...prev, [e.target.name]: e.target.value}));
       }
 
       return (
             <>
-                  <Profile information={profileInfo} editHandler={showEditProfile} />
-                  {editStatus ? <EditProfile information={profileInfo} updateValue={editValues} /> : null}
+                  <Profile information={profileInfo} 
+                           editHandler={showEditProfile} 
+                           isEditing={editStatus}/>
+                  <AnimatePresence>
+                        {editStatus && 
+                              <EditProfile information={profileInfo} 
+                                          updateValue={editValues}
+                                          cancelEditHandler={cancelEditProfile}
+                                          saveEditHandler={saveEditProfile} 
+                                          isEditing={editStatus} />}
+                  </AnimatePresence>
             </>
       );
 }
 
-function Profile({information, editHandler}) {
+function Profile({information, editHandler, isEditing}) {
 
       return (
             <section className="profile-section">
-                  <button className="edit-profile" onClick={editHandler}>Edit</button>
+                  <button className={`edit-profile ${isEditing ? 'no-click' : ""}`} onClick={editHandler}>Edit</button>
                   <h1>{information.fullName}</h1>
                   <h2>{information.profession}</h2>
                   <div className="profile-links">
@@ -53,10 +72,10 @@ function Profile({information, editHandler}) {
                               <MdLocationPin />
                               {information.location}
                         </a>
-                        <a href={information.linkedIn}>
+                        <a href={information.linkedIn} target='_blank' rel="noopener noreferrer">
                               <FaLinkedin /> LinkedIn
                         </a>
-                        <a href={information.github}>
+                        <a href={information.github} target='_blank' rel="noopener noreferrer">
                               <FaGithub /> Github
                         </a>
                   </div>
@@ -64,9 +83,16 @@ function Profile({information, editHandler}) {
       );
 }
 
-function EditProfile({information, updateValue}) {
+function EditProfile({information, updateValue, cancelEditHandler, saveEditHandler, isEditing}) {
       return (
-            <section className='edit-profile-section'>
+            <motion.section 
+                  className="edit-profile-section"
+                  initial={{ height: 0, opacity: 0}}
+                  animate={{ height: isEditing ? "auto" : 0, opacity: isEditing ? 1 : 0 }}
+                  exit={{ height: 0, opacity: 0, translateY: -50}}
+                  transition={{ duration: 0.500, ease: "easeIn" }}
+                  style={{ overflow: "hidden" }}
+            >
                   <h2>Profile Editor</h2>
                   <form action="#">
                         <div>
@@ -74,7 +100,7 @@ function EditProfile({information, updateValue}) {
                               <input type="text" 
                                     name="fullName" 
                                     id="full-name"
-                                    placeholder={information.fullName} 
+                                    value={information.fullName} 
                                     onChange={updateValue} />
                         </div>
                         <div>
@@ -82,7 +108,7 @@ function EditProfile({information, updateValue}) {
                               <input type="text" 
                                     name="profession" 
                                     id="profession" 
-                                    placeholder={information.profession}
+                                    value={information.profession}
                                     onChange={updateValue} />
                         </div>
                         <div>
@@ -91,7 +117,7 @@ function EditProfile({information, updateValue}) {
                                     name="email" 
                                     id="email" 
                                     autoComplete='email'
-                                    placeholder={information.email}
+                                    value={information.email}
                                     onChange={updateValue} />
                         </div>
                         <div>
@@ -99,7 +125,7 @@ function EditProfile({information, updateValue}) {
                               <input type="tel" 
                                     name="number" 
                                     id="phone-number" 
-                                    placeholder={information.number} 
+                                    value={information.number} 
                                     onChange={updateValue}/>
                         </div>
                         <div>
@@ -107,7 +133,7 @@ function EditProfile({information, updateValue}) {
                               <input type="text" 
                                     name="location" 
                                     id="location" 
-                                    placeholder={information.location} 
+                                    value={information.location} 
                                     onChange={updateValue} />
                         </div>
                         <div>
@@ -115,7 +141,7 @@ function EditProfile({information, updateValue}) {
                               <input type="text" 
                                     name="linkedIn" 
                                     id="linkedin-account"
-                                    placeholder={information.linkedIn} 
+                                    value={information.linkedIn} 
                                     onChange={updateValue} />
                         </div>
                         <div>
@@ -123,15 +149,15 @@ function EditProfile({information, updateValue}) {
                               <input type="text" 
                                     name="github" 
                                     id="github-account" 
-                                    placeholder={information.github}
+                                    value={information.github}
                                     onChange={updateValue} />
                         </div>                                                
                   </form>
                   <div className="button-group">
-                              <button className="cancel">Cancel</button>
-                              <button className="save">Save</button>
+                              <button className="cancel" onClick={cancelEditHandler}>Cancel</button>
+                              <button className="save" onClick={saveEditHandler}>Save</button>
                   </div>
-            </section>
+            </motion.section>
       );
 }
 
