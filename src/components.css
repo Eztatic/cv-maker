@@ -2,21 +2,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  list-style-type: none;
 }
 
+/* General */
+
 .profile-section,
-.edit-profile-section {
+.edit-profile-section,
+.education-section,
+.edit-education-section {
   padding: 2rem;
   margin-bottom: 2rem;
   outline: 1px solid #000;
   position: relative;
-}
-
-.profile-links {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
 }
 
 button.edit-profile {
@@ -24,28 +22,103 @@ button.edit-profile {
   right: 2rem;
 }
 
+.no-click {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Profile Section Styling */
+
+.profile-links {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Form Styling */
+
 form {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
-form > div {
+form div {
+  width: 49.25%;
   display: flex;
   flex-direction: column;
-  width: 48%;
 }
 
 .button-group {
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 2rem;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   gap: 2rem;
 }
 
-.no-click {
-  pointer-events: none;
-  opacity: 0.5;
+/* Education Section Styling */
+
+.education-section > h1 {
+  margin-bottom: 0.5rem;
+}
+
+button.edit-education {
+  position: absolute;
+  top: 2.75rem;
+  right: 2rem;
+}
+
+/* Education Edit Section Styling */
+
+.education-section > ul > *:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.edit-education-section > h2 {
+  margin-bottom: 0.5rem;
+}
+
+.edit-education-section > form > ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.edit-education-section > form > ul li {
+  padding: 1.5rem;
+  border-radius: 12px;
+  outline: 1px solid #000;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+button.close {
+  font-size: 1em;
+  font-weight: bold;
+  width: 2em;
+  height: 2em;
+  padding: 1em;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.edit-education-section .button-group {
+  justify-content: space-between;
+}
+
+.edit-education-section .button-group > div > button:first-child {
+  margin-right: 2rem;
 }

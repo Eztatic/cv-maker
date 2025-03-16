@@ -1,11 +1,12 @@
 import './App.css'
-import {Profile, EditProfile, ProfileSection} from './components.jsx';
+import {ProfileSection, EducationSection} from './components.jsx';
 
 function App() {
 
   return (
     <>
       <ProfileSection />
+      <EducationSection />
     </>
   )
 }
