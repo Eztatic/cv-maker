@@ -10,7 +10,9 @@
 .profile-section,
 .edit-profile-section,
 .education-section,
-.edit-education-section {
+.edit-education-section,
+.experience-section,
+.edit-experience-section {
   padding: 2rem;
   margin-bottom: 2rem;
   outline: 1px solid #000;
@@ -19,15 +21,25 @@
 
 button.edit-profile {
   position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+}
+
+button.edit-education,
+button.edit-experience {
+  position: absolute;
+  top: 2.75rem;
   right: 2rem;
+}
+
+button:hover {
+  transform: scale(1.03);
 }
 
 .no-click {
   opacity: 0.5;
   pointer-events: none;
 }
-
-/* Profile Section Styling */
 
 .profile-links {
   margin-top: 1.5rem;
@@ -60,36 +72,28 @@ form div {
   gap: 2rem;
 }
 
-/* Education Section Styling */
-
-.education-section > h1 {
+.education-section > h1,
+.experience-section > h1,
+.edit-education-section > h2,
+.edit-experience-section > h2 {
   margin-bottom: 0.5rem;
 }
 
-button.edit-education {
-  position: absolute;
-  top: 2.75rem;
-  right: 2rem;
-}
-
-/* Education Edit Section Styling */
-
-.education-section > ul > *:not(:last-child) {
+.education-section > ul > *:not(:last-child),
+.experience-section > ul > *:not(:last-child) {
   margin-bottom: 1rem;
 }
 
-.edit-education-section > h2 {
-  margin-bottom: 0.5rem;
-}
-
-.edit-education-section > form > ul {
+.edit-education-section > form > ul,
+.edit-experience-section > form > ul {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-.edit-education-section > form > ul li {
+.edit-education-section > form > ul li,
+.edit-experience-section > form > ul > li {
   padding: 1.5rem;
   border-radius: 12px;
   outline: 1px solid #000;
@@ -99,7 +103,7 @@ button.edit-education {
   gap: 1rem;
 }
 
-button.close {
+button.remove {
   font-size: 1em;
   font-weight: bold;
   width: 2em;
@@ -115,10 +119,56 @@ button.close {
   cursor: pointer;
 }
 
-.edit-education-section .button-group {
+button.delete-description {
+  font-size: 1.5em;
+  color: #ff0000;
+  background-color: transparent;
+  padding: 0;
+}
+
+button.delete-description:hover {
+  color: #f89191;
+  border: none;
+}
+
+.edit-education-section .button-group,
+.edit-experience-section .button-group {
   justify-content: space-between;
 }
 
-.edit-education-section .button-group > div > button:first-child {
+.edit-education-section .button-group > div > button:first-child,
+.edit-experience-section .button-group > div > button:first-child {
   margin-right: 2rem;
+}
+
+.experience-section .experience-description > li {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+.experience-section .duration,
+.experience-section .location {
+  margin-right: 2rem;
+  display: inline-block;
+}
+
+.description {
+  width: 100%;
+}
+
+.description > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.description > ul > li {
+  padding: 0;
+  outline: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.description > ul > li > input {
+  width: 97%;
 }

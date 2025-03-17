@@ -315,7 +315,7 @@ function EditEducation({
 	const extractData = (information) => {
 		return information.map((data) => (
 			<li key={data.id}>
-				<button className="close" onClick={() => { removeItemHandler(data.id) }}>X</button>
+				<button className="remove" onClick={() => { removeItemHandler(data.id) }}>X</button>
 				<div>
 					<label htmlFor="degree">Degree: </label>
 					<input
@@ -366,7 +366,7 @@ function EditEducation({
 			exit={{ height: 0, opacity: 0, translateY: -50 }}
 			transition={{ duration: 0.5, ease: "easeIn" }}
 			style={{ overflow: "hidden" }}>
-			<h2>Profile Editor</h2>
+			<h2>Education Editor</h2>
 			<form action="#">
 				<ul>
 					{extractData(info)}
@@ -383,4 +383,174 @@ function EditEducation({
 	);
 }
 
-export { ProfileSection, EducationSection };
+function ExperienceSection() {
+	return (
+		<>
+			<Experience />
+			<EditExperience />
+		</>
+	);
+}
+
+const expInfo = [
+	{
+		id: uuidv4(),
+		position: 'IT Tech Support',
+		company: 'Company A',
+		duration: 'June 20XX - September 20XX',
+		location: 'Somewhere Else',
+		description: [
+			{ id: uuidv4(), text: "description 1" },
+			{ id: uuidv4(), text: "description 2" },
+			{ id: uuidv4(), text: "description 3" }
+		]
+	},
+	// {
+	// 	id: uuidv4(),
+	// 	position: 'IT Engineer',
+	// 	company: 'Company B',
+	// 	duration: 'June 20XX - September 20XX',
+	// 	location: 'Somewhere Else',
+	// 	description: [
+	// 		{ id: uuidv4(), text: "description 1" },
+	// 		{ id: uuidv4(), text: "description 2" },
+	// 		{ id: uuidv4(), text: "description 3" }
+	// 	]
+	// }
+];
+
+function Experience() {
+	const ExperienceDescription = ({ data }) => {
+		return (
+			<ul className="experience-description">
+				{data.map((description) =>
+					<li key={description.id}>{description.text}</li>
+				)}
+			</ul>
+		);
+	}
+
+	const ExperienceData = ({ information }) => {
+		return (
+			<ul>
+				{
+					information.map((data) => (
+						<li key={data.id}>
+							<h2 className="position">{data.position}</h2>
+							<h3 className="company">{data.company}</h3>
+							<p className="duration">
+								<FaCalendarAlt /> {data.duration}
+							</p>
+							<p className="location">
+								<MdLocationPin /> {data.location}
+							</p>
+							<ExperienceDescription data={data.description} />
+						</li>
+					))
+				}
+			</ul>
+		);
+	}
+
+	return (
+		<section className="experience-section">
+			<button className="edit-experience">Edit</button>
+			<h1>Experience</h1>
+			<hr />
+			<ExperienceData information={expInfo} />
+		</section>
+	);
+}
+
+function EditExperience() {
+	const ExperienceDescription = ({ data }) => {
+		return (
+			<div className="description">
+				<label>Description</label>
+				<ul>
+					{
+						data.map((description) => {
+							return (
+								<li key={description.id}>
+									<input
+										type="text"
+										name="position"
+										id="position"
+									/>
+									<button className="delete-description">X</button>
+								</li>
+							);
+						})
+					}
+				</ul>
+			</div>
+		);
+	}
+
+	const ExperienceData = ({ information }) => {
+		return (
+			<ul>
+				{
+					information.map((data) => (
+						<li key={data.id}>
+							<button className="remove">X</button>
+							<div>
+								<label htmlFor="position">Position: </label>
+								<input
+									type="text"
+									name="position"
+									id="position"
+								/>
+							</div>
+							<div>
+								<label htmlFor="company">Company: </label>
+								<input
+									type="text"
+									name="company"
+									id="company"
+								/>
+							</div>
+							<div>
+								<label htmlFor="duration">Duration: </label>
+								<input
+									type="text"
+									name="duration"
+									id="duration"
+								/>
+							</div>
+							<div>
+								<label htmlFor="location">Location: </label>
+								<input
+									type="text"
+									name="location"
+									id="location"
+								/>
+							</div>
+							<ExperienceDescription data={data.description} />
+						</li>
+					))
+				}
+			</ul>
+		);
+	}
+
+	return (
+		<motion.section
+			className="edit-experience-section"
+		>
+			<h2>Experience Editor</h2>
+			<form action="#">
+				<ExperienceData information={expInfo} />
+			</form>
+			<div className="button-group">
+				<button className="addExperience">Add Experience</button>
+				<div>
+					<button className="cancel">Cancel</button>
+					<button className="save">Save</button>
+				</div>
+			</div>
+		</motion.section>
+	);
+}
+
+export { ProfileSection, EducationSection, ExperienceSection };

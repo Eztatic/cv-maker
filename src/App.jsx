@@ -1,5 +1,5 @@
 import './App.css'
-import {ProfileSection, EducationSection} from './components.jsx';
+import { ProfileSection, EducationSection, ExperienceSection } from './components.jsx';
 
 function App() {
 
@@ -7,6 +7,7 @@ function App() {
     <>
       <ProfileSection />
       <EducationSection />
+      <ExperienceSection />
     </>
   )
 }
