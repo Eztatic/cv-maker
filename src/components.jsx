@@ -5,19 +5,19 @@ import { FaGithub, FaLinkedin, FaCalendarAlt } from "react-icons/fa";
 import { MdEmail, MdOutlinePhone, MdLocationPin } from "react-icons/md";
 import "./components.css";
 
-function ProfileSection() {
-	const info = {
-		fullName: "Elliot Alderson",
-		profession: "Cybersecurity Engineer",
-		email: "mrRobot@mail.com",
-		number: "123-456-7890",
-		location: "San Francisco, CA",
-		linkedIn: "https://www.linkedin.com/login",
-		github: "https://github.com/",
-	};
+const profileData = {
+	fullName: "The Unknown",
+	profession: "Cybersecurity Engineer",
+	email: "mrRobot@mail.com",
+	number: "123-456-7890",
+	location: "San Francisco, CA",
+	linkedIn: "https://www.linkedin.com/login",
+	github: "https://github.com/",
+};
 
+function ProfileSection() {
 	const [editStatus, setEditStatus] = useState(false);
-	const [profileInfo, setProfileInfo] = useState(info);
+	const [profileInfo, setProfileInfo] = useState(profileData);
 	const [currentProfile, setCurrentProfile] = useState(profileInfo);
 
 	const showEditProfile = () => {
@@ -199,7 +199,7 @@ function EditProfile({
 	);
 }
 
-const eduInfo = [
+const eduData = [
 	{
 		id: uuidv4(),
 		degree: 'Bachelor of Science in Computer Science',
@@ -218,7 +218,7 @@ const eduInfo = [
 
 function EducationSection() {
 	const [editStatus, setEditStatus] = useState(false);
-	const [educationInfo, setEducationInfo] = useState(eduInfo);
+	const [educationInfo, setEducationInfo] = useState(eduData);
 	const [currentEducation, setCurrentEducation] = useState(educationInfo);
 
 	const showEditProfile = () => {
@@ -237,7 +237,7 @@ function EducationSection() {
 
 	const editValues = (id, property, value) => {
 		setEducationInfo(prev => prev.map(item =>
-			item.id === id ? Object.assign({}, item, { [property]: value }) : item
+			item.id === id ? { ...item, [property]: value } : item
 		));
 	};
 
@@ -383,16 +383,7 @@ function EditEducation({
 	);
 }
 
-function ExperienceSection() {
-	return (
-		<>
-			<Experience />
-			<EditExperience />
-		</>
-	);
-}
-
-const expInfo = [
+const expData = [
 	{
 		id: uuidv4(),
 		position: 'IT Tech Support',
@@ -405,21 +396,117 @@ const expInfo = [
 			{ id: uuidv4(), text: "description 3" }
 		]
 	},
-	// {
-	// 	id: uuidv4(),
-	// 	position: 'IT Engineer',
-	// 	company: 'Company B',
-	// 	duration: 'June 20XX - September 20XX',
-	// 	location: 'Somewhere Else',
-	// 	description: [
-	// 		{ id: uuidv4(), text: "description 1" },
-	// 		{ id: uuidv4(), text: "description 2" },
-	// 		{ id: uuidv4(), text: "description 3" }
-	// 	]
-	// }
+	{
+		id: uuidv4(),
+		position: 'IT Engineer',
+		company: 'Company B',
+		duration: 'June 20XX - September 20XX',
+		location: 'Somewhere Else',
+		description: [
+			{ id: uuidv4(), text: "description 1" },
+			{ id: uuidv4(), text: "description 2" },
+			{ id: uuidv4(), text: "description 3" }
+		]
+	}
 ];
 
-function Experience() {
+function ExperienceSection() {
+	const [editStatus, setEditStatus] = useState(false);
+	const [experienceInfo, setExperienceInfo] = useState(expData);
+	const [currentExperience, setCurrentExperience] = useState(experienceInfo);
+
+	const showEditExperience = () => {
+		setEditStatus(true);
+		setCurrentExperience(experienceInfo.map(item => ({ ...item })));
+	};
+
+	const cancelEditExperience = () => {
+		setEditStatus(false);
+		setExperienceInfo(currentExperience);
+	};
+
+	const saveEditExperience = () => {
+		setTimeout(() => setEditStatus(false), 250);
+	};
+
+	const editValues = (id, property, value) => {
+		setExperienceInfo(prev => prev.map(item => {
+			if (property === "description") {
+				return {
+					...item,
+					description: item.description.map(desc =>
+						desc.id === id ? { ...desc, text: value } : desc
+					)
+				}
+			}
+			return item.id === id ? { ...item, [property]: value } : item
+		}));
+	};
+
+	const removeExperience = (id) => {
+		setExperienceInfo((prev) => prev.filter((obj) => obj.id !== id));
+	}
+
+	const removeExpDesc = (id) => {
+		setExperienceInfo((prev) =>
+			prev.map((obj) => ({
+				...obj,
+				description: obj.description.filter((desc) => desc.id !== id)
+			})));
+	}
+
+	const addExperience = () => {
+		const newExperience = [...experienceInfo,
+		{
+			id: uuidv4(),
+			position: "",
+			duration: "",
+			company: "",
+			location: "",
+			description: [
+				{ id: uuidv4(), text: "description 1" },
+				{ id: uuidv4(), text: "description 2" },
+				{ id: uuidv4(), text: "description 3" }
+			]
+		}];
+		setExperienceInfo(newExperience);
+	}
+
+	const addDescription = (parentID) => {
+		const newDesc = { id: uuidv4(), text: "" };
+		setExperienceInfo((prev) => {
+			return prev.map((item) =>
+				item.id === parentID ?
+					{ ...item, description: [...item.description, newDesc] } : item)
+		})
+	}
+
+	return (
+		<>
+			<Experience
+				info={experienceInfo}
+				isEditing={editStatus}
+				editHandler={showEditExperience} />
+			<AnimatePresence>
+				{editStatus && (
+					<EditExperience
+						info={experienceInfo}
+						isEditing={editStatus}
+						updateValue={editValues}
+						cancelEditHandler={cancelEditExperience}
+						removeItemHandler={removeExperience}
+						saveEditHandler={saveEditExperience}
+						removeDescHandler={removeExpDesc}
+						addDescHandler={addDescription}
+						addItemHandler={addExperience}
+					/>
+				)}
+			</AnimatePresence>
+		</>
+	);
+}
+
+function Experience({ info, isEditing, editHandler }) {
 	const ExperienceDescription = ({ data }) => {
 		return (
 			<ul className="experience-description">
@@ -454,16 +541,20 @@ function Experience() {
 
 	return (
 		<section className="experience-section">
-			<button className="edit-experience">Edit</button>
+			<button
+				className={`edit-experience ${isEditing ? "no-click" : ""}`}
+				onClick={editHandler}>
+				Edit</button>
 			<h1>Experience</h1>
 			<hr />
-			<ExperienceData information={expInfo} />
+			<ExperienceData information={info} />
 		</section>
 	);
 }
 
-function EditExperience() {
-	const ExperienceDescription = ({ data }) => {
+function EditExperience({ info, isEditing, updateValue, saveEditHandler, cancelEditHandler, removeItemHandler, removeDescHandler, addDescHandler, addItemHandler }) {
+
+	const experienceDescription = (parentID, data) => {
 		return (
 			<div className="description">
 				<label>Description</label>
@@ -474,32 +565,47 @@ function EditExperience() {
 								<li key={description.id}>
 									<input
 										type="text"
-										name="position"
-										id="position"
+										name="description"
+										id="description"
+										value={description.text}
+										onChange={(e) => {
+											updateValue(description.id, "description", e.target.value)
+										}}
 									/>
-									<button className="delete-description">X</button>
+									<button
+										className="delete-description"
+										onClick={() => removeDescHandler(description.id)}>X</button>
 								</li>
 							);
 						})
 					}
 				</ul>
+				<button className="addDescription" onClick={(e) => {
+					e.preventDefault();
+					addDescHandler(parentID);
+				}
+				}>Add Description</button>
 			</div>
 		);
 	}
 
-	const ExperienceData = ({ information }) => {
+	const experienceData = (information) => {
 		return (
 			<ul>
 				{
 					information.map((data) => (
 						<li key={data.id}>
-							<button className="remove">X</button>
+							<button className="remove" onClick={() => removeItemHandler(data.id)}>X</button>
 							<div>
 								<label htmlFor="position">Position: </label>
 								<input
 									type="text"
 									name="position"
 									id="position"
+									value={data.position}
+									onChange={(e) => {
+										updateValue(data.id, "position", e.target.value)
+									}}
 								/>
 							</div>
 							<div>
@@ -508,6 +614,10 @@ function EditExperience() {
 									type="text"
 									name="company"
 									id="company"
+									value={data.company}
+									onChange={(e) => {
+										updateValue(data.id, "company", e.target.value)
+									}}
 								/>
 							</div>
 							<div>
@@ -516,6 +626,10 @@ function EditExperience() {
 									type="text"
 									name="duration"
 									id="duration"
+									value={data.duration}
+									onChange={(e) => {
+										updateValue(data.id, "duration", e.target.value)
+									}}
 								/>
 							</div>
 							<div>
@@ -524,9 +638,13 @@ function EditExperience() {
 									type="text"
 									name="location"
 									id="location"
+									value={data.location}
+									onChange={(e) => {
+										updateValue(data.id, "location", e.target.value)
+									}}
 								/>
 							</div>
-							<ExperienceDescription data={data.description} />
+							{experienceDescription(data.id, data.description)}
 						</li>
 					))
 				}
@@ -537,16 +655,21 @@ function EditExperience() {
 	return (
 		<motion.section
 			className="edit-experience-section"
+			initial={{ height: 0, opacity: 0 }}
+			animate={{ height: isEditing ? "auto" : 0, opacity: isEditing ? 1 : 0 }}
+			exit={{ height: 0, opacity: 0, translateY: -50 }}
+			transition={{ duration: 0.5, ease: "easeIn" }}
+			style={{ overflow: "hidden" }}
 		>
 			<h2>Experience Editor</h2>
 			<form action="#">
-				<ExperienceData information={expInfo} />
+				{experienceData(info)}
 			</form>
 			<div className="button-group">
-				<button className="addExperience">Add Experience</button>
+				<button className="addExperience" onClick={addItemHandler}>Add Experience</button>
 				<div>
-					<button className="cancel">Cancel</button>
-					<button className="save">Save</button>
+					<button className="cancel" onClick={cancelEditHandler}>Cancel</button>
+					<button className="save" onClick={saveEditHandler}>Save</button>
 				</div>
 			</div>
 		</motion.section>

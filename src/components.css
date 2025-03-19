@@ -172,3 +172,12 @@ button.delete-description:hover {
 .description > ul > li > input {
   width: 97%;
 }
+
+button.addDescription {
+  border-radius: 4px;
+  margin-top: 1.5rem;
+}
+
+button.addDescription:hover {
+  transform: scale(1);
+}
