@@ -18,20 +18,20 @@ const profileData = {
 function ProfileSection() {
 	const [editStatus, setEditStatus] = useState(false);
 	const [profileInfo, setProfileInfo] = useState(profileData);
-	const [currentProfile, setCurrentProfile] = useState(profileInfo);
+	const [backupProfile, setBackupProfile] = useState(null);
 
 	const showEditProfile = () => {
 		setEditStatus(true);
-		setCurrentProfile({ ...profileInfo });
+		setBackupProfile({ ...profileInfo });
 	};
 
 	const cancelEditProfile = () => {
 		setEditStatus(false);
-		setProfileInfo({ ...currentProfile });
+		setProfileInfo({ ...backupProfile });
 	};
 
 	const saveEditProfile = () => {
-		setTimeout(() => setEditStatus(false), 250);
+		setEditStatus(false);
 	};
 
 	const editValues = (e) => {
@@ -219,20 +219,20 @@ const eduData = [
 function EducationSection() {
 	const [editStatus, setEditStatus] = useState(false);
 	const [educationInfo, setEducationInfo] = useState(eduData);
-	const [currentEducation, setCurrentEducation] = useState(educationInfo);
+	const [backupEducation, setBackupEducation] = useState(null);
 
 	const showEditProfile = () => {
 		setEditStatus(true);
-		setCurrentEducation(educationInfo.map(item => ({ ...item })));
+		setBackupEducation(educationInfo.map(item => ({ ...item })));
 	};
 
 	const cancelEditEducation = () => {
 		setEditStatus(false);
-		setEducationInfo(currentEducation);
+		setEducationInfo({ ...backupEducation });
 	};
 
 	const saveEditEducation = () => {
-		setTimeout(() => setEditStatus(false), 250);
+		setEditStatus(false);
 	};
 
 	const editValues = (id, property, value) => {
@@ -413,16 +413,16 @@ const expData = [
 function ExperienceSection() {
 	const [editStatus, setEditStatus] = useState(false);
 	const [experienceInfo, setExperienceInfo] = useState(expData);
-	const [currentExperience, setCurrentExperience] = useState(experienceInfo);
+	const [backupExperience, setBackupExperience] = useState(null);
 
 	const showEditExperience = () => {
 		setEditStatus(true);
-		setCurrentExperience(experienceInfo.map(item => ({ ...item })));
+		setBackupExperience(experienceInfo.map(item => ({ ...item })));
 	};
 
 	const cancelEditExperience = () => {
 		setEditStatus(false);
-		setExperienceInfo(currentExperience);
+		setExperienceInfo({ ...backupExperience });
 	};
 
 	const saveEditExperience = () => {
