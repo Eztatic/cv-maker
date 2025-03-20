@@ -27,7 +27,7 @@ function ProfileSection() {
 
 	const cancelEditProfile = () => {
 		setEditStatus(false);
-		setProfileInfo(currentProfile);
+		setProfileInfo({ ...currentProfile });
 	};
 
 	const saveEditProfile = () => {
@@ -552,7 +552,16 @@ function Experience({ info, isEditing, editHandler }) {
 	);
 }
 
-function EditExperience({ info, isEditing, updateValue, saveEditHandler, cancelEditHandler, removeItemHandler, removeDescHandler, addDescHandler, addItemHandler }) {
+function EditExperience({
+	info,
+	isEditing,
+	updateValue,
+	saveEditHandler,
+	cancelEditHandler,
+	removeItemHandler,
+	removeDescHandler,
+	addDescHandler,
+	addItemHandler }) {
 
 	const experienceDescription = (parentID, data) => {
 		return (
@@ -580,11 +589,12 @@ function EditExperience({ info, isEditing, updateValue, saveEditHandler, cancelE
 						})
 					}
 				</ul>
-				<button className="addDescription" onClick={(e) => {
-					e.preventDefault();
-					addDescHandler(parentID);
-				}
-				}>Add Description</button>
+				<button className="addDescription"
+					onClick={(e) => {
+						e.preventDefault();
+						addDescHandler(parentID);
+					}}>
+					Add Description</button>
 			</div>
 		);
 	}
